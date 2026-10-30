@@ -1,0 +1,449 @@
+/**
+ * @name Liquid Glass Dark
+ * @description Dark theme with glossy white Apple-style liquid glass buttons and panels.
+ * @version 2.0.0
+ * @author you
+ */
+
+/* Works with BetterDiscord (themes folder) or Vencord (QuickCSS / themes).
+   Discord class names are hashed, so selectors match on stable prefixes ([class*="name_"]). */
+
+@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Lato:wght@400;700;900&display=swap");
+
+/* ---------- Tweak here ---------- */
+:root {
+  --lg-accent: #0a84ff;            /* Apple system blue */
+  --lg-bg: #0c0d10;                /* app backdrop */
+  --lg-wallpaper: radial-gradient(1200px 800px at 10% -10%, rgba(80, 110, 180, 0.28) 0%, transparent 60%),
+                  radial-gradient(1000px 700px at 110% 110%, rgba(150, 90, 160, 0.22) 0%, transparent 55%),
+                  linear-gradient(180deg, #121318, #0a0b0e);
+  --lg-glass: rgba(255, 255, 255, 0.06);
+  --lg-glass-strong: rgba(28, 29, 34, 0.78);
+  --lg-stroke: rgba(255, 255, 255, 0.12);
+  --lg-edge: rgba(255, 255, 255, 0.08);
+  --lg-hi: rgba(255, 255, 255, 0.12);       /* selected fill */
+  --lg-shine: rgba(255, 255, 255, 0.35);    /* top specular line */
+  --lg-blur: saturate(180%) blur(22px);
+  --lg-radius: 14px;
+  --lg-shadow: 0 1px 1px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.45);
+  --lg-text: #f5f5f7;
+  --lg-text-muted: #a1a1a6;
+  --lg-guild-fade: 160px;          /* height of the fade at the bottom of the server list */
+  --lg-font-message: "Arimo", sans-serif;
+  --lg-font-name: "Lato", sans-serif;
+  --lg-composer-collapsed: 320px;  /* type bar width while idle */
+  --lg-composer-space: 90px;       /* empty space under the last message for the floating bar */
+  /* liquid glass shader: diagonal light-catching rims + corner sheen, toned down for dark */
+  --lg-rim:
+    inset 2px -2px 1px -1px rgba(255, 255, 255, 0.35),
+    inset -2px 2px 1px -1px rgba(255, 255, 255, 0.35),
+    inset 6px -6px 1px -6px rgba(255, 255, 255, 0.2),
+    inset -6px 6px 1px -6px rgba(255, 255, 255, 0.2),
+    inset 0 0 2px rgba(0, 0, 0, 0.6);
+  --lg-sheen: linear-gradient(45deg,
+    rgba(255, 255, 255, 0.14) 0%, transparent 25%,
+    transparent 75%, rgba(255, 255, 255, 0.14) 100%);
+}
+
+/* ---------- Palette overrides (old + new Discord variable names) ---------- */
+.theme-light, .theme-dark, .theme-darker, .theme-midnight, .visual-refresh {
+  --background-primary: transparent;
+  --background-secondary: transparent;
+  --background-secondary-alt: var(--lg-glass);
+  --background-tertiary: transparent;
+  --background-floating: var(--lg-glass-strong);
+  --background-modifier-hover: rgba(255, 255, 255, 0.05);
+  --background-modifier-active: rgba(255, 255, 255, 0.08);
+  --background-modifier-selected: var(--lg-hi);
+  --background-modifier-accent: var(--lg-edge);
+  --background-base-lowest: transparent;
+  --background-base-lower: transparent;
+  --background-base-low: transparent;
+  --background-surface-high: var(--lg-glass-strong);
+  --background-surface-higher: var(--lg-glass-strong);
+  --background-surface-highest: var(--lg-glass-strong);
+  --chat-background-default: transparent;
+  --channeltextarea-background: var(--lg-glass);
+  --modal-background: var(--lg-glass-strong);
+  --modal-footer-background: transparent;
+  --input-background: var(--lg-glass);
+  --bg-overlay-chat: transparent;
+  --bg-base-primary: transparent;
+  --bg-base-secondary: transparent;
+  --bg-base-tertiary: transparent;
+
+  --text-normal: var(--lg-text);
+  --text-default: var(--lg-text);
+  --text-strong: #fff;
+  --header-primary: var(--lg-text);
+  --header-secondary: var(--lg-text-muted);
+  --text-muted: var(--lg-text-muted);
+  --interactive-normal: #d1d1d6;
+  --interactive-hover: #fff;
+  --interactive-active: #fff;
+  --interactive-muted: #5a5a60;
+  --channels-default: var(--lg-text-muted);
+  --text-link: #64a8ff;
+  --brand-experiment: var(--lg-accent);
+  --brand-500: var(--lg-accent);
+  --control-brand-foreground: var(--lg-accent);
+  --scrollbar-auto-thumb: rgba(255, 255, 255, 0.18);
+  --scrollbar-auto-track: transparent;
+  --scrollbar-thin-thumb: rgba(255, 255, 255, 0.18);
+  --scrollbar-thin-track: transparent;
+  color-scheme: dark;
+}
+
+/* ---------- Backdrop ---------- */
+html, body, #app-mount {
+  background: var(--lg-bg) !important;
+}
+#app-mount [class*="bg_"],
+#app-mount [class^="app_"] {
+  background: var(--lg-wallpaper) !important;
+}
+
+/* ---------- Glass panels ---------- */
+[class*="sidebar_"],
+[class*="guilds_"],
+[class*="membersWrap_"],
+[class*="panels_"],
+[class*="chatContent_"],
+[class*="container_"][class*="themed_"],   /* top bar */
+[class*="channelTextArea_"] [class*="scrollableContainer_"],
+[class*="menu_"],                          /* context menus */
+[class*="popout_"],
+[class*="userPopout"],
+[class*="tooltip_"],
+[class*="autocomplete_"],
+[class*="root_"][class*="modal"],
+[class*="layer_"] [class*="standardSidebarView_"] [class*="sidebarRegion_"] {
+  background: var(--lg-glass) !important;
+  backdrop-filter: var(--lg-blur);
+  -webkit-backdrop-filter: var(--lg-blur);
+  border: 1px solid var(--lg-stroke);
+  box-shadow: var(--lg-shadow), inset 0 1px 0 var(--lg-edge);
+}
+
+/* floating surfaces need more opacity to stay readable over chat */
+[class*="menu_"], [class*="popout_"], [class*="userPopout"],
+[class*="tooltip_"], [class*="autocomplete_"], [class*="root_"][class*="modal"] {
+  background: var(--lg-glass-strong) !important;
+}
+
+[class*="sidebar_"],
+[class*="membersWrap_"],
+[class*="chatContent_"] {
+  border-radius: var(--lg-radius);
+  margin: 6px;
+  overflow: hidden;
+}
+[class*="menu_"], [class*="popout_"], [class*="autocomplete_"] {
+  border-radius: 12px;
+}
+[class*="tooltip_"] {
+  color: var(--lg-text) !important;
+  border-radius: 10px;
+}
+[class*="tooltipPointer_"] { display: none; }
+
+/* settings content pane */
+[class*="standardSidebarView_"] [class*="contentRegion_"],
+[class*="standardSidebarView_"] [class*="contentRegionScroller_"] {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* ---------- Liquid glass buttons (white glass on dark) ---------- */
+button[class*="button_"],
+[class*="button_"][role="button"],
+[class*="lookFilled_"],
+[class*="lookOutlined_"] {
+  position: relative;
+  border-radius: 999px !important;
+  background:
+    var(--lg-sheen),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.13) 100%) !important;
+  backdrop-filter: var(--lg-blur);
+  -webkit-backdrop-filter: var(--lg-blur);
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow:
+    var(--lg-rim),
+    inset 0 1px 0 var(--lg-shine),              /* top specular */
+    inset 0 -1px 2px rgba(255, 255, 255, 0.06), /* bottom refraction */
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: transform 0.18s cubic-bezier(.2, .8, .2, 1), box-shadow 0.18s, filter 0.18s;
+}
+button[class*="button_"]:hover,
+[class*="button_"][role="button"]:hover {
+  filter: brightness(1.15);
+  box-shadow:
+    var(--lg-rim),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    0 10px 26px rgba(0, 0, 0, 0.45),
+    0 0 18px rgba(255, 255, 255, 0.06);       /* faint glow */
+}
+button[class*="button_"]:active,
+[class*="button_"][role="button"]:active {
+  transform: scale(0.97);
+}
+
+/* primary/brand buttons: tinted blue glass */
+[class*="colorBrand_"],
+[class*="lookFilled_"][class*="colorBrand"],
+button[class*="button_"][class*="primary_"] {
+  background:
+    var(--lg-sheen),
+    linear-gradient(180deg, rgba(100, 170, 255, 0.85) 0%, rgba(10, 132, 255, 0.7) 55%, rgba(10, 100, 220, 0.8) 100%) !important;
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+/* danger buttons: tinted red glass */
+[class*="colorRed_"],
+button[class*="button_"][class*="critical"] {
+  background:
+    var(--lg-sheen),
+    linear-gradient(180deg, rgba(255, 120, 120, 0.85) 0%, rgba(255, 59, 48, 0.7) 55%, rgba(200, 35, 28, 0.8) 100%) !important;
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+/* don't pill-ify tiny icon/link buttons */
+[class*="lookBlank_"], [class*="lookLink_"] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+}
+
+/* ---------- Server icons: glass bubbles ---------- */
+[class*="guilds_"] [class*="wrapper_"] svg foreignObject,
+[class*="guilds_"] [class*="childWrapper_"] {
+  border-radius: 16px;
+}
+[class*="guilds_"] [class*="childWrapper_"] {
+  background: var(--lg-sheen), rgba(255, 255, 255, 0.1) !important;
+  color: var(--lg-text) !important;
+  box-shadow: var(--lg-rim), inset 0 1px 0 var(--lg-shine), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* taller fade so server icons dissolve before reaching the user panel */
+[class*="guilds_"] [class*="scroller_"] {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lg-guild-fade)), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lg-guild-fade)), transparent 100%);
+}
+
+/* ---------- User panel: mute / deafen / chevrons as one glass pill ---------- */
+[class*="panels_"] [class*="buttons_"] {
+  gap: 0 !important;
+  padding: 2px;
+  border-radius: 999px;
+  background:
+    var(--lg-sheen),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.13) 100%);
+  backdrop-filter: var(--lg-blur);
+  -webkit-backdrop-filter: var(--lg-blur);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    var(--lg-rim),
+    inset 0 1px 0 var(--lg-shine),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 6px 18px rgba(0, 0, 0, 0.35);
+}
+[class*="panels_"] [class*="buttons_"] > *,
+[class*="panels_"] [class*="buttons_"] button,
+[class*="panels_"] [class*="buttons_"] [role="button"] {
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+[class*="panels_"] [class*="buttons_"] button:hover,
+[class*="panels_"] [class*="buttons_"] [role="button"]:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 999px !important;
+}
+
+/* ---------- Call controls: all groups in one glass bar ---------- */
+/* shortcut: class names guessed from current Discord, send the real ones from the element picker if it doesn't apply */
+[class*="callContainer_"] [class*="centerControls_"],
+[class*="callContainer_"] [class*="bottomControls_"] > [class*="wrapper_"] {
+  display: flex !important;
+  align-items: center;
+  gap: 6px !important;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--lg-sheen), var(--lg-glass-strong);
+  backdrop-filter: var(--lg-blur);
+  -webkit-backdrop-filter: var(--lg-blur);
+  border: 1px solid var(--lg-stroke);
+  box-shadow: var(--lg-rim), var(--lg-shadow);
+}
+/* strip the separate frames around each group, keep the round buttons inside */
+[class*="callContainer_"] [class*="centerControls_"] > :not(button),
+[class*="callContainer_"] [class*="bottomControls_"] > [class*="wrapper_"] > :not(button) {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* jelly wiggle on hover, squish-and-bounce on click, on everything clickable */
+:is(button, [role="button"], [class*="guilds_"] [class*="blobContainer_"]):hover {
+  animation: lg-jiggle 0.6s cubic-bezier(.3, .7, .4, 1);
+}
+/* wide rows (channels, members, menus, tabs): no tilt, a 6deg turn swings their ends too far */
+:is(a[class*="link_"], [role="link"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"],
+    [role="tab"], [role="option"], [class*="member_"]):hover {
+  animation: lg-jiggle-soft 0.6s cubic-bezier(.3, .7, .4, 1);
+}
+:is(button, [role="button"], [class*="guilds_"] [class*="blobContainer_"], a[class*="link_"], [role="link"],
+    [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="tab"], [role="option"],
+    [class*="member_"]):active {
+  animation: lg-squish 0.45s cubic-bezier(.3, .7, .4, 1);
+}
+@keyframes lg-jiggle-soft {
+  0%   { transform: scale(1, 1); }
+  25%  { transform: scale(1.03, 0.94); }
+  50%  { transform: scale(0.99, 1.04); }
+  75%  { transform: scale(1.01, 0.99); }
+  100% { transform: scale(1, 1); }
+}
+@keyframes lg-jiggle {
+  0%   { transform: scale(1, 1) rotate(0); }
+  20%  { transform: scale(1.12, 0.9) rotate(-6deg); }
+  40%  { transform: scale(0.94, 1.08) rotate(5deg); }
+  60%  { transform: scale(1.05, 0.96) rotate(-3deg); }
+  80%  { transform: scale(0.98, 1.02) rotate(1deg); }
+  100% { transform: scale(1, 1) rotate(0); }
+}
+@keyframes lg-squish {
+  0%   { transform: scale(1, 1); }
+  25%  { transform: scale(1.2, 0.8); }
+  50%  { transform: scale(0.88, 1.12); }
+  75%  { transform: scale(1.05, 0.95); }
+  100% { transform: scale(1, 1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(button, [role="button"], [class*="guilds_"] [class*="blobContainer_"], a[class*="link_"], [role="link"],
+      [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="tab"], [role="option"],
+      [class*="member_"]) { animation: none !important; }
+}
+
+/* ---------- Channels / members hover & selected ---------- */
+[class*="containerDefault_"] [class*="link_"],
+[class*="member_"] [class*="layout_"] {
+  border-radius: 10px;
+  transition: background 0.15s;
+}
+[class*="modeSelected_"] [class*="link_"],
+[class*="selected_"] > [class*="link_"] {
+  background: var(--lg-hi) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- Fonts ---------- */
+[class*="messageContent_"],
+[class*="repliedTextContent_"],
+[class*="embedDescription_"] {
+  font-family: var(--lg-font-message) !important;
+}
+[class*="username_"],
+[class*="member_"] [class*="name_"],
+[class*="nameTag_"] {
+  font-family: var(--lg-font-name) !important;
+  font-weight: 700;
+}
+
+/* ---------- Messages ---------- */
+[class*="message_"]:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+[class*="mentioned_"] {
+  background: rgba(10, 132, 255, 0.12) !important;
+}
+[class*="embedFull_"], [class*="markup_"] code, [class*="markup_"] pre {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 10px;
+  border-color: var(--lg-edge) !important;
+}
+
+/* ---------- Composer: floating glass pill ---------- */
+[class*="channelTextArea_"] [class*="scrollableContainer_"] {
+  border-radius: 22px !important;
+  background: var(--lg-sheen), var(--lg-glass) !important;
+  box-shadow: var(--lg-rim), var(--lg-shadow) !important;
+}
+[class*="form_"] { background: transparent !important; }
+
+/* float the composer over the chat so messages stay visible beside the small bar */
+[class*="chatContent_"] { position: relative; }
+[class*="chatContent_"] > form {
+  position: absolute !important;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+[class*="chatContent_"] > form::before { display: none !important; }
+[class*="chatContent_"] > form [class*="channelTextArea_"],
+[class*="chatContent_"] > form [class*="typing_"],
+[class*="chatContent_"] > form [class*="jumpToPresentBar_"] {
+  pointer-events: auto;
+}
+/* room under the last message so the bar never covers it */
+[class*="messagesWrapper_"] [class*="scrollerSpacer_"] {
+  height: var(--lg-composer-space) !important;
+}
+
+/* collapsed when idle and empty; expands on focus (Discord focuses it when you start typing) */
+[class*="channelTextArea_"] {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  transition: max-width 0.35s cubic-bezier(0, .87, .04, .99);  /* opening */
+}
+[class*="channelTextArea_"]:not(:focus-within):has([class*="placeholder_"]) {
+  max-width: var(--lg-composer-collapsed);
+  transition: max-width 0.35s cubic-bezier(.2, .8, .2, 1);     /* closing */
+}
+[class*="channelTextArea_"] [class*="buttons_"] {
+  transition: opacity 0.2s;
+}
+[class*="channelTextArea_"]:not(:focus-within):has([class*="placeholder_"]) [class*="buttons_"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Inputs ---------- */
+input[class*="input_"], [class*="searchBar_"], [class*="search_"] [class*="searchBar"] {
+  background: var(--lg-glass) !important;
+  border: 1px solid var(--lg-stroke) !important;
+  border-radius: 10px !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Toggles: iOS style ---------- */
+[class*="checked_"][class*="container_"] {
+  background-color: #30d158 !important;
+}
+
+/* ---------- Scrollbars ---------- */
+::-webkit-scrollbar-thumb {
+  border-radius: 999px !important;
+}
+
+/* ---------- Modal backdrop ---------- */
+[class*="backdrop_"] {
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(8px);
+}
